@@ -65,7 +65,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                 children: [
                   Icon(Icons.check_circle, color: Colors.white),
                   SizedBox(width: 8),
-                  Text('Inyandiko yahindutse neza!'),
+                  Text('Post yahindutse neza!'),
                 ],
               ),
               backgroundColor: AppTheme.primaryGreen,
@@ -88,7 +88,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                 children: [
                   Icon(Icons.check_circle, color: Colors.white),
                   SizedBox(width: 8),
-                  Text('Inyandiko nshya yakozwe neza!'),
+                  Text('Post nshya yakozwe neza!'),
                 ],
               ),
               backgroundColor: AppTheme.primaryGreen,
@@ -119,7 +119,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Hindura Inyandiko' : 'Inyandiko Nshya'),
+        title: Text(_isEditing ? 'Hindura Post' : 'Post Nshya'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -148,8 +148,8 @@ class _PostFormScreenState extends State<PostFormScreen> {
                     Expanded(
                       child: Text(
                         _isEditing
-                            ? 'Uhindura inyandiko #${widget.post!.id}'
-                            : 'Ushyiraho inyandiko nshya mu Rwanda Media',
+                            ? 'Uhindura Post #${widget.post!.id}'
+                            : 'Ushyiraho Post nshya mu Rwanda Media',
                         style: const TextStyle(
                           color: AppTheme.primaryGreen,
                           fontSize: 13,
@@ -166,7 +166,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                 controller: _userIdController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Indangamuntu (User ID)',
+                  labelText: 'User ID',
                   hintText: 'Injiza inomero y\'umukoresha',
                   prefixIcon:
                       Icon(Icons.person, color: AppTheme.primaryGreen),
@@ -176,7 +176,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                     return 'Injiza User ID';
                   }
                   if (int.tryParse(value.trim()) == null) {
-                    return 'User ID igomba kuba inomero';
+                    return 'User ID igomba kuba umubare';
                   }
                   return null;
                 },
@@ -188,15 +188,15 @@ class _PostFormScreenState extends State<PostFormScreen> {
                 controller: _titleController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
-                  labelText: 'Umutwe w\'Inyandiko',
-                  hintText: 'Injiza umutwe w\'inyandiko',
+                  labelText: 'Umutwe wa post (title)',
+                  hintText: 'Injiza title ya Post',
                   prefixIcon:
                       Icon(Icons.title, color: AppTheme.primaryGreen),
                 ),
                 maxLines: 2,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Injiza umutwe w\'inyandiko';
+                    return 'Injiza title ya post';
                   }
                   if (value.trim().length < 5) {
                     return 'Umutwe ugomba kuba nibura inyuguti 5';
@@ -211,18 +211,18 @@ class _PostFormScreenState extends State<PostFormScreen> {
                 controller: _bodyController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
-                  labelText: 'Ibiri mu Nyandiko',
-                  hintText: 'Injiza inyandiko yawe hano...',
+                  labelText: 'Ibiri mur Post',
+                  hintText: 'Andika Post yawe hano...',
                   prefixIcon: Icon(Icons.article, color: AppTheme.primaryGreen),
                   alignLabelWithHint: true,
                 ),
                 maxLines: 8,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Injiza inyandiko';
+                    return 'Injiza Post';
                   }
                   if (value.trim().length < 10) {
-                    return 'Inyandiko igomba kuba nibura inyuguti 10';
+                    return 'Post igomba kuba nibura inyuguti 10';
                   }
                   return null;
                 },
@@ -249,7 +249,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                         ? 'Turimo...'
                         : _isEditing
                             ? 'Bika Impinduka'
-                            : 'Ohereza Inyandiko',
+                            : 'Ohereza Post',
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),

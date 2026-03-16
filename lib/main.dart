@@ -103,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ],
                   ),
                   child: const Icon(
-                    Icons.article_rounded,
+                    Icons.article,
                     size: 56,
                     color: AppTheme.primaryGreen,
                   ),
@@ -127,7 +127,7 @@ class _SplashScreenState extends State<SplashScreen>
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
-                    '🇷🇼  Urugo rw\'Amakuru - Rwanda',
+                    '🇷🇼  Post Manager App - Rwanda',
                     style: TextStyle(
                       color: AppTheme.darkGreen,
                       fontSize: 14,

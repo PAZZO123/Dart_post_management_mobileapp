@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (password != _correctPassword) {
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Ijambo ryibanga si ryo. Gerageza "Admin 123"';
+        _errorMessage = 'Ijambo ryibanga si ryo. Baza Admin wanyu';
       });
       return;
     }
@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen>
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
-                      '🇷🇼  Urugo rw\'Amakuru - Rwanda',
+                      '🇷🇼  Post Manager App - Rwanda',
                       style: TextStyle(
                         color: AppTheme.darkGreen,
                         fontSize: 12,
@@ -336,7 +336,7 @@ class _LoginScreenState extends State<LoginScreen>
                             color: Colors.white70, size: 16),
                         SizedBox(width: 8),
                         Text(
-                          'Ijambo ryibanga: Admin 123',
+                          'Ijambo ryibanga Ritangwa na Admin',
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 13,

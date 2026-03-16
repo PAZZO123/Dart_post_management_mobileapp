@@ -29,8 +29,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Siba Inyandiko'),
-        content: const Text('Uremeza gusiba iyi nyandiko burundu?'),
+        title: const Text('Siba Post'),
+        content: const Text('Uremeza gusiba iyi Post burundu?'),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         actions: [
           TextButton(
@@ -56,7 +56,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             content: const Row(children: [
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 8),
-              Text('Inyandiko yasibwe!'),
+              Text('Post yasibwe!'),
             ]),
             backgroundColor: AppTheme.primaryGreen,
             behavior: SnackBarBehavior.floating,
@@ -95,7 +95,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Amakuru y\'Inyandiko'),
+        title: const Text('Amakuru ya Post'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -131,7 +131,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            'Inyandiko #${_currentPost.id}',
+                            'Post #${_currentPost.id}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -155,7 +155,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               Icon(
                                 (_currentPost.id != null && _currentPost.id! > 100)
                                     ? Icons.person
-                                    : Icons.cloud_outlined,
+                                    : Icons.cloud,
                                 size: 13,
                                 color: (_currentPost.id != null && _currentPost.id! > 100)
                                     ? AppTheme.primaryGreen

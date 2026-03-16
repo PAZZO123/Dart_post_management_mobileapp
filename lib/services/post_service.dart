@@ -16,10 +16,18 @@ class ApiException implements Exception {
 }
 
 class PostService {
-  static const String _baseUrl = 'https://jsonplaceholder.typicode.com';
-  static const Duration _timeout = Duration(seconds: 45);
+  static const String _baseUrl = 'http://jsonplaceholder.typicode.com';
+  static const Duration _timeout = Duration(seconds: 60);
 
-  // Fetch all posts
+  // Fallback sample posts if internet is not available
+  static List<Post> get fallbackPosts => [
+    Post(id: 1, userId: 1, title: 'Ikaze kuri Posts Manager', body: 'Murakaza neza kuri Posts Manager App. Interineti ntabwo ihari ubu, ariko urashobora kongeramo inyandiko nshya.'),
+    Post(id: 2, userId: 1, title: 'Uburyo bwo gukoresha app', body: 'Kanda Post nshya hasi iburyo kugirango wongeremo inyandiko. Urashobora no guhindura cyangwa gusiba inyandiko iyo ubishaka.'),
+    Post(id: 3, userId: 2, title: 'Amakuru y\'u Rwanda', body: 'U Rwanda ni igihugu gikura vuba cyane muri Afurika. Ikoranabuhanga ryageze kure mu myaka ya vuba.'),
+    Post(id: 4, userId: 2, title: 'Ikoranabuhanga mu Rwanda', body: 'Rwanda Rwageze kure cyane mu ikoranabuhanga. Kigali ni umwe mu mijyi inoze cyane muri Afurika.'),
+    Post(id: 5, userId: 3, title: 'Flutter ni iki?', body: 'Flutter ni framework ya Google yo gukora apps kuri Android na iOS icyarimwe. Ikoresha ururimi rwa Dart.'),
+  ];
+
   Future<List<Post>> fetchPosts() async {
     try {
       final response = await http
@@ -31,22 +39,20 @@ class PostService {
         return jsonList.map((json) => Post.fromJson(json)).toList();
       } else {
         throw ApiException(
-          message: 'Kugeraho amakuru byanze. Ongera ugerageze.',
+          message: 'Kubona Posts byanze. Ongera ugerageze.',
           statusCode: response.statusCode,
         );
       }
     } on SocketException {
-      throw ApiException(
-          message: 'Nta interineti. Reba aho wandikiye maze ugerageze.');
-    } on FormatException {
-      throw ApiException(message: 'Amakuru yoherejwe si yo. Ongera ugerageze.');
+      // Return sample posts when no internet
+      return fallbackPosts;
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException(message: 'Ikosa ridategerejwe: $e');
+      // Return sample posts on timeout or any other error
+      return fallbackPosts;
     }
   }
 
-  // Fetch single post
   Future<Post> fetchPost(int id) async {
     try {
       final response = await http
@@ -56,8 +62,7 @@ class PostService {
       if (response.statusCode == 200) {
         return Post.fromJson(jsonDecode(response.body));
       } else if (response.statusCode == 404) {
-        throw ApiException(
-            message: 'Inyandiko ntiyabonetse.', statusCode: 404);
+        throw ApiException(message: 'Post ntiyabonetse.', statusCode: 404);
       } else {
         throw ApiException(
           message: 'Kugeraho inyandiko byanze.',
@@ -68,11 +73,10 @@ class PostService {
       throw ApiException(message: 'Nta interineti. Reba aho wandikiye.');
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException(message: 'Ikosa ridategerejwe: $e');
+      throw ApiException(message: 'Ikosa ritategenajwe: $e');
     }
   }
 
-  // Create a new post
   Future<Post> createPost(Post post) async {
     try {
       final response = await http
@@ -87,19 +91,18 @@ class PostService {
         return Post.fromJson(jsonDecode(response.body));
       } else {
         throw ApiException(
-          message: 'Gukora inyandiko nshya byanze.',
+          message: 'Gukora Post nshya byanze.',
           statusCode: response.statusCode,
         );
       }
     } on SocketException {
-      throw ApiException(message: 'Nta interineti. Reba aho wandikiye.');
+      throw ApiException(message: 'Nta interineti. Mugerageze Mukanya.');
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException(message: 'Ikosa ridategerejwe: $e');
+      throw ApiException(message: 'Ikosa ritateganijwe: $e');
     }
   }
 
-  // Update a post
   Future<Post> updatePost(Post post) async {
     try {
       final response = await http
@@ -114,19 +117,18 @@ class PostService {
         return Post.fromJson(jsonDecode(response.body));
       } else {
         throw ApiException(
-          message: 'Guhindura inyandiko byanze.',
+          message: 'Guhindura Post byanze.',
           statusCode: response.statusCode,
         );
       }
     } on SocketException {
-      throw ApiException(message: 'Nta interineti. Reba aho wandikiye.');
+      throw ApiException(message: 'Nta interineti. Mugerageze mukanya.');
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException(message: 'Ikosa ridategerejwe: $e');
+      throw ApiException(message: 'Ikosa ritateganijwe: $e');
     }
   }
 
-  // Delete a post
   Future<void> deletePost(int id) async {
     try {
       final response = await http
@@ -135,15 +137,15 @@ class PostService {
 
       if (response.statusCode != 200) {
         throw ApiException(
-          message: 'Gusiba inyandiko byanze.',
+          message: 'Gusiba Post byanze.',
           statusCode: response.statusCode,
         );
       }
     } on SocketException {
-      throw ApiException(message: 'Nta interineti. Reba aho wandikiye.');
+      throw ApiException(message: 'Nta interineti. Mugerageze Mukanya.');
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException(message: 'Ikosa ridategerejwe: $e');
+      throw ApiException(message: 'Ikosa ritateganijwe: $e');
     }
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../models/post.dart';
 import '../services/post_service.dart';
 import '../theme.dart';
+import 'login_screen.dart';
 import 'post_detail_screen.dart';
 import 'post_form_screen.dart';
-import 'login_screen.dart';
 
 class PostsListScreen extends StatefulWidget {
   final String username;
@@ -36,13 +37,21 @@ class _PostsListScreenState extends State<PostsListScreen> {
     try {
       final posts = await _postService.fetchPosts();
       setState(() {
-        _posts = posts;
+        // If we got posts (even fallback), show them
+        if (posts.isNotEmpty) {
+          _posts = posts;
+          _errorMessage = null;
+        } else {
+          _errorMessage = 'Nta Posts zibonetse.';
+        }
         _isLoading = false;
       });
     } catch (e) {
+      // Even on error, try to show fallback posts
       setState(() {
-        _errorMessage = e.toString();
+        _posts = PostService.fallbackPosts;
         _isLoading = false;
+        _errorMessage = null;
       });
     }
   }
@@ -51,8 +60,8 @@ class _PostsListScreenState extends State<PostsListScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Siba Inyandiko'),
-        content: const Text('Uremeza gusiba iyi nyandiko?'),
+        title: const Text('Siba Post'),
+        content: const Text('Uremeza gusiba iyi Post?'),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         actions: [
           TextButton(
@@ -81,7 +90,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
             content: const Row(children: [
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 8),
-              Text('Inyandiko yasibwe neza!'),
+              Text('Post yasibwe neza!'),
             ]),
             backgroundColor: AppTheme.primaryGreen,
             behavior: SnackBarBehavior.floating,
@@ -138,7 +147,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const Text(
-              'Urugo rw\'Amakuru - Rwanda',
+              'Post Manager App - Rwanda',
               style: TextStyle(fontSize: 10, color: Colors.white70),
             ),
           ],
@@ -150,7 +159,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
             tooltip: 'Subiramo',
           ),
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.exit_to_app),
             tooltip: 'Sohoka',
             onPressed: () async {
               final confirm = await showDialog<bool>(
@@ -200,7 +209,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
                 children: [
                   CircularProgressIndicator(color: AppTheme.primaryGreen, strokeWidth: 3),
                   SizedBox(height: 16),
-                  Text('Turagutegereza...', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  Text('Tegereza Gato...', style: TextStyle(color: Colors.grey, fontSize: 16)),
                 ],
               ),
             )
@@ -211,7 +220,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.wifi_off, size: 72, color: Colors.grey),
+                        const Icon(Icons.signal_wifi_off, size: 72, color: Colors.grey),
                         const SizedBox(height: 16),
                         Text(_errorMessage!,
                             textAlign: TextAlign.center,
@@ -231,10 +240,10 @@ class _PostsListScreenState extends State<PostsListScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.article_outlined, size: 72, color: Colors.grey[400]),
+                          Icon(Icons.description, size: 72, color: Colors.grey[400]),
                           const SizedBox(height: 16),
                           const Text(
-                            'Nta nyandiko zihari.\nNdika inyandiko nshya!',
+                            'Nta Posts zihari.\n Andika post nshya!',
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
@@ -253,7 +262,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
                               const Icon(Icons.article, color: AppTheme.accentGold, size: 18),
                               const SizedBox(width: 8),
                               Text(
-                                'Inyandiko zose: ${_posts.length}',
+                                'Posts zose: ${_posts.length}',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -307,7 +316,7 @@ class _PostsListScreenState extends State<PostsListScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToCreate,
         icon: const Icon(Icons.add),
-        label: const Text('Inyandiko Nshya'),
+        label: const Text('Post Nshya'),
         backgroundColor: AppTheme.primaryGreen,
       ),
     );
@@ -357,7 +366,7 @@ class _PostCard extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: isNew
-                    ? const Icon(Icons.fiber_new, color: AppTheme.accentGold, size: 26)
+                    ? const Icon(Icons.new_releases, color: AppTheme.accentGold, size: 26)
                     : Text(
                         '${post.id}',
                         style: const TextStyle(
@@ -381,7 +390,7 @@ class _PostCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
-                          'NSHYA',
+                          'New',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -408,7 +417,7 @@ class _PostCard extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          isNew ? Icons.person : Icons.cloud_outlined,
+                          isNew ? Icons.person : Icons.cloud,
                           size: 14,
                           color: isNew ? AppTheme.primaryGreen : Colors.grey[500],
                         ),
